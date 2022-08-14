@@ -1,0 +1,39 @@
+{
+    "name": "BTDatePicker",
+    "version": "0.0.1",
+    "description": "Showcase Fabric component with backward compatibility",
+    "main": "index.js",
+    "files": [
+        "src",
+        "android",
+        "ios",
+        "datepicker.podspec",
+        "!android/build",
+        "!ios/build",
+        "!**/__tests__",
+        "!**/__fixtures__",
+        "!**/__mocks__"
+    ],
+    "keywords": ["react-native", "ios", "android"],
+    "repository": "https://github.com/<your_github_handle>/example-component",
+    "author": "<Your Name> <your_email@your_provider.com> (https://github.com/<your_github_handle>)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/<your_github_handle>/example-component/issues"
+    },
+    "homepage": "https://github.com/<your_github_handle>/example-component#readme",
+    "devDependencies": {},
+    "peerDependencies": {
+        "react": "*",
+        "react-native": "*"
+    },
+    "codegenConfig": {
+        "libraries": [
+            {
+            "name": "BTDatePickerComponents",
+            "type": "components",
+            "jsSrcsDir": "src"
+            }
+        ]
+    }
+}
