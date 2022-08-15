@@ -20,7 +20,7 @@ type DatePickerEvent = Readonly<{
 type DateMode = "date" | "time" | "datetime"
 
 interface BTDatePickerProps extends ViewProps {
-  mode?: WithDefault<DateMode, "date">
+  mode: string
   date: Double
   minimumDate?: Double
   maximumDate?: Double

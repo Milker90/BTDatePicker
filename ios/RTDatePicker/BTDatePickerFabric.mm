@@ -26,21 +26,29 @@ using namespace facebook::react;
 //    UIDatePickerModeDate,
 //    integerValue)
 
-+ (UIDatePickerMode)convertDateMode:(BTDatePickerViewMode)mode {
-    switch (mode) {
-        case facebook::react::BTDatePickerViewMode::Date:
-            return UIDatePickerModeDate;
-            break;
-        case facebook::react::BTDatePickerViewMode::Time:
-            return UIDatePickerModeTime;
-            break;
-        case facebook::react::BTDatePickerViewMode::Datetime:
-            return UIDatePickerModeDateAndTime;
-            break;
-        default:
-            return UIDatePickerModeDate;
-            break;
++ (UIDatePickerMode)convertDateMode:(std::string)mode {
+    if (mode == "date") {
+        return UIDatePickerModeDate;
+    } else if (mode == "time") {
+        return UIDatePickerModeTime;
+    } else if (mode == "datetime") {
+        return UIDatePickerModeDateAndTime;
     }
+    return UIDatePickerModeDate;
+//    switch (mode) {
+//        case facebook::react::BTDatePickerViewMode::Date:
+//            return UIDatePickerModeDate;
+//            break;
+//        case facebook::react::BTDatePickerViewMode::Time:
+//            return UIDatePickerModeTime;
+//            break;
+//        case facebook::react::BTDatePickerViewMode::Datetime:
+//            return UIDatePickerModeDateAndTime;
+//            break;
+//        default:
+//            return UIDatePickerModeDate;
+//            break;
+//    }
 }
 
 @end
@@ -63,7 +71,7 @@ using namespace facebook::react;
 
 - (void)didChange {
     auto payload = (BTDatePickerViewEventEmitter::OnChange){
-        .timestamp =  _datePicker.date.timeIntervalSince1970 * 1000.0
+        .timestamp =  _datePicker.date.timeIntervalSince1970
     };
     std::static_pointer_cast<BTDatePickerViewEventEmitter const>(_eventEmitter)->onChange(payload);
 }
@@ -82,6 +90,11 @@ using namespace facebook::react;
     return concreteComponentDescriptorProvider<BTDatePickerViewComponentDescriptor>();
 }
 
+- (void)updateState:(facebook::react::State::Shared const &)state
+           oldState:(facebook::react::State::Shared const &)oldState {
+    [super updateState:state oldState:oldState];
+}
+
 - (void)updateProps:(facebook::react::Props::Shared const &)props
            oldProps:(facebook::react::Props::Shared const &)oldProps {
     
@@ -95,11 +108,18 @@ using namespace facebook::react;
     UIDatePickerMode mode = [RCTConvert convertDateMode:newViewProps.mode];
     if (oldViewProps.mode != newViewProps.mode || mode != _datePicker.datePickerMode) {
         _datePicker.datePickerMode = [RCTConvert convertDateMode:newViewProps.mode];
+//        CGRect oldFrame = _datePicker.frame;
+//        if (_datePicker.datePickerMode == UIDatePickerModeDate) {
+//            _datePicker.frame = CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width, 368);
+//        } else if (_datePicker.datePickerMode == UIDatePickerModeTime) {
+//            _datePicker.frame = CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width, 318.5);
+//        } else if (_datePicker.datePickerMode == UIDatePickerModeDateAndTime) {
+//            _datePicker.frame = CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width, 417.5);
+//        }
     }
 
-    if (oldViewProps.date != newViewProps.date) {
-        _datePicker.date = [NSDate dateWithTimeIntervalSince1970:newViewProps.date];
-    }
+    _datePicker.date = [NSDate dateWithTimeIntervalSince1970:newViewProps.date];
+
 
     if (oldViewProps.minimumDate != newViewProps.minimumDate) {
         _datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:newViewProps.minimumDate];
